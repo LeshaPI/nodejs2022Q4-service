@@ -5,9 +5,10 @@ import { ConfigModule } from '@nestjs/config';
 import { ArtistsModule } from './artists/artists.module';
 import { TracksModule } from './tracks/tracks.module';
 import { AlbumsModule } from './albums/albums.module';
+import { FavoritesModule } from './favorites/favorites.module';
 
 @Module({
-  imports: [ConfigModule.forRoot(), Database, UsersModule, ArtistsModule, TracksModule, AlbumsModule],
+  imports: [ConfigModule.forRoot(), Database, UsersModule, ArtistsModule, TracksModule, AlbumsModule, FavoritesModule],
   controllers: [],
   providers: [],
 })
