@@ -7,12 +7,15 @@ import { Artist } from '../artists/types/artist.shema';
 import { ArtistDto } from '../artists/types/artist.dto';
 import { Track } from '../tracks/types/track.shema';
 import { createTrackDto } from '../tracks/types/track.dto';
+import { Album } from '../albums/types/album.shema';
+import { albumDto } from '../albums/types/album.dto';
 
 @Injectable()
 export default class DB {
   users: User[] = [];
   artists: Artist[] = [];
   tracks: Track[] = [];
+  albums: Album[] = [];
 
   getOneUser(id) {
     for (let user of this.users) {
@@ -79,7 +82,7 @@ export default class DB {
     const artist = this.artists[index];
 
     for(let track of this.tracks) {
-      if(id === track.artistId){
+      if(id === track.artistId) {
         track.artistId = null;
       }
     }
@@ -125,4 +128,45 @@ export default class DB {
 
     return track;
   }
+
+  getOneAlbum(id) {
+    for (let album of this.albums) {
+      if (album.id === id) {
+        return album;
+      }
+    }
+  }
+
+  setAlbum(albumDto: albumDto) {
+    const updatedTrack: Album = {
+      id: uuidv4(),
+      ...albumDto
+    }
+
+    this.albums.push(updatedTrack);
+    return updatedTrack;
+  }
+
+  udateAlbum(album: Album) {
+    const index = this.albums.findIndex((dbAlbums) => dbAlbums.id === album.id);
+    this.albums.splice(index, 1, album);
+  }
+
+  deleteAlbum(id: string) {
+    const index = this.albums.findIndex((dbAlbum) => dbAlbum.id === id);
+    const album = this.albums[index];
+
+    for(let track of this.tracks) {
+      if( track.albumId === id ) {
+        track.albumId = null;
+      }
+    }
+
+    if (album) {
+      this.albums.splice(index, 1);
+    }
+
+    return album;
+  }
+
 }
