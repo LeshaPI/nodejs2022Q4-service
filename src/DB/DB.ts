@@ -3,10 +3,13 @@ import { Injectable } from '@nestjs/common';
 import { IUser } from '../users/types/users.shema';
 import { v4 as uuidv4 } from 'uuid';
 import { CreateUserDto } from '../users/types/user.dto';
+import { Artist } from '../artists/types/artist.shema';
+import { ArtistDto } from '../artists/types/artist.dto';
 
 @Injectable()
 export default class DB {
   users: IUser[] = [];
+  artists: Artist[] = [];
 
   getOneUser(id) {
     for (let user of this.users) {
@@ -43,4 +46,39 @@ export default class DB {
 
     return user;
   }
+
+
+  setArtists(userDto: ArtistDto) {
+    const updatedArtist: Artist = {
+      id: uuidv4(),
+      ...userDto,
+    };
+
+    this.artists.push(updatedArtist);
+    return updatedArtist;
+  }
+
+  getOneArtist(id) {
+    for (let artist of this.artists) {
+      if (artist.id === id) {
+        return artist;
+      }
+    }
+  }
+
+  udateArtist(artist: Artist) {
+    const index = this.artists.findIndex((dbArtist) => dbArtist.id === artist.id);
+    this.artists.splice(index, 1, artist);
+  }
+
+  deleteArtist(id: string) {
+    const index = this.artists.findIndex((dbArtist) => dbArtist.id === id);
+    const artist = this.artists[index];
+    if (artist) {
+      this.artists.splice(index, 1);
+    }
+
+    return artist;
+  }
+
 }
