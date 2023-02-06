@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { IUser } from './types/users.shema';
+import { User } from './types/users.shema';
 import DB from '../DB/DB';
 import { CreateUserDto, UpdatePasswordDto } from './types/user.dto';
 
@@ -8,7 +8,7 @@ import { CreateUserDto, UpdatePasswordDto } from './types/user.dto';
 export class UsersService {
   constructor(private database: DB) {}
 
-  async getAll(): Promise<IUser[]> {
+  async getAll(): Promise<User[]> {
     const users = this.database.users;
     return users.map((user) => {
       const { password, ...withoutPassword } = user;
@@ -16,7 +16,7 @@ export class UsersService {
     });
   }
 
-  async getUser(id: string): Promise<IUser> {
+  async getUser(id: string): Promise<User> {
     const user = this.database.getOneUser(id);
 
     if (!user) {
@@ -54,6 +54,7 @@ export class UsersService {
     const { password, ...withoutPassword } = user;
     return withoutPassword
   }
+
 
   async deleteUser(id: string) {
     const deleted = this.database.deleteUser(id);

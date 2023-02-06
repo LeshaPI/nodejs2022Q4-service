@@ -4,7 +4,6 @@ import {
   Delete,
   Get,
   HttpCode,
-  HttpException,
   HttpStatus,
   Param,
   ParseUUIDPipe,
@@ -12,7 +11,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { CreateUserDto, UpdatePasswordDto } from './types/user.dto';
-import { IUser } from './types/users.shema';
+import { User } from './types/users.shema';
 import { UsersService } from './users.service';
 
 @Controller('user')
@@ -20,27 +19,17 @@ export class UsersController {
   constructor(private usersService: UsersService) {}
 
   @Get()
-  async getAll(): Promise<IUser[]> {
+  async getAll(): Promise<User[]> {
     return this.usersService.getAll();
   }
 
   @Get(':id')
-  async getUser(@Param('id', new ParseUUIDPipe()) id: string): Promise<IUser> {
-    const user = await this.usersService.getUser(id);
-
-    if (!user) {
-      throw new HttpException("user doesn't exist", HttpStatus.NOT_FOUND);
-    }
-
-    return user;
+  async getUser(@Param('id', new ParseUUIDPipe()) id: string): Promise<User> {
+    return await this.usersService.getUser(id);
   }
 
   @Post()
   async createUser(@Body() createUserDto: CreateUserDto): Promise<any> {
-    
-    const { login, password } = createUserDto;
-
-
     return await this.usersService.createUser(createUserDto);
   }
 

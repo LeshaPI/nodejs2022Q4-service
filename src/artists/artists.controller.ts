@@ -26,13 +26,13 @@ export class ArtistsController {
     async updateArtist (
         @Body() createArtistDto: ArtistDto,
         @Param('id', new ParseUUIDPipe()) id: string
-        ): Promise< Artist > {
+    ): Promise< Artist > {
         return await this.artistsServise.updateArtist( id, createArtistDto );
     }
 
     @HttpCode(HttpStatus.NO_CONTENT)
     @Delete(':id')
     async deleteUser(@Param('id', new ParseUUIDPipe()) id: string) {
-      return await this.artistsServise.deleteArtist(id);
+        return await this.artistsServise.deleteArtist(id);
     }
 }

@@ -1,6 +1,6 @@
 /* eslint-disable prefer-const */
 import { Injectable } from '@nestjs/common';
-import { IUser } from '../users/types/users.shema';
+import { User } from '../users/types/users.shema';
 import { v4 as uuidv4 } from 'uuid';
 import { CreateUserDto } from '../users/types/user.dto';
 import { Artist } from '../artists/types/artist.shema';
@@ -8,7 +8,7 @@ import { ArtistDto } from '../artists/types/artist.dto';
 
 @Injectable()
 export default class DB {
-  users: IUser[] = [];
+  users: User[] = [];
   artists: Artist[] = [];
 
   getOneUser(id) {
@@ -20,7 +20,7 @@ export default class DB {
   }
 
   setUser(userDto: CreateUserDto) {
-    const updatedUser: IUser = {
+    const updatedUser: User = {
       id: uuidv4(),
       ...userDto,
       version: 1,
@@ -32,7 +32,7 @@ export default class DB {
     return updatedUser;
   }
 
-  udateUser(user: IUser) {
+  udateUser(user: User) {
     const index = this.users.findIndex((dbUser) => dbUser.id === user.id);
     this.users.splice(index, 1, user);
   }

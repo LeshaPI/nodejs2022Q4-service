@@ -11,7 +11,7 @@ export class ArtistsService {
        return this.database.artists;
     }
 
-    async getArtist(id): Promise<Artist> {
+    async getArtist(id: string): Promise<Artist> {
 
         const artist = this.database.getOneArtist(id)
         
